@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Tyred/services/auth.dart';
 
 class Login extends StatefulWidget {
+  //final Function toggleView;
+  //Login({this.toggleView});
+
   const Login({
     Key key,
   }) : super(key: key);
@@ -13,6 +17,15 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormBuilderState>();
+
+  final AuthService _auth=AuthService();
+  //final _formKey = GlobalKey<FormState>();
+
+
+  String email="";
+  String password="";
+  String error="";
+  bool loading=false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +76,11 @@ class _LoginState extends State<Login> {
                                 padding: const EdgeInsets.only(
                                     left: 20.0, top: 12, bottom: 12),
                                 child: FormBuilderTextField(
-                                  onChanged: (value) =>
-                                      _formKey.currentState.validate(),
+                                  onChanged: (value) {
+                                      _formKey.currentState.validate();
+                                      setState(()=>email=value);
+
+                                  },
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 16,
@@ -90,8 +106,11 @@ class _LoginState extends State<Login> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
                                 child: FormBuilderTextField(
-                                  onChanged: (value) =>
-                                      _formKey.currentState.validate(),
+                                  onChanged: (value) {
+                                      _formKey.currentState.validate();
+                                      setState(()=>password=value);
+
+                                  },
                                   obscureText: true,
                                   maxLines: 1,
                                   style: TextStyle(
@@ -170,9 +189,17 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     if (_formKey.currentState.saveAndValidate()) {
-                      print(_formKey.currentState.value);
+                      //print(_formKey.currentState.value);
+                      setState(()=>loading=true);
+                      dynamic result= await _auth.signInWithEmailAndPassword(email, password);
+                      if(result==null){
+                        setState(() {
+                          error='Wrong Credentials';
+                          loading=false;
+                        });
+                      }
                     }
                   },
                 ),

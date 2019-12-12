@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo_app/services/auth.dart';
+import 'package:Tyred/services/auth.dart';
 
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Shopping List'),
+          title: Text('Home page'),
           backgroundColor: Colors.brown,
           elevation: 0.0,
           actions: <Widget>[

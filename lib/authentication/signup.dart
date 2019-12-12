@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:Tyred/services/auth.dart';
 class SignUp extends StatefulWidget {
   const SignUp({
     Key key,
@@ -12,7 +12,16 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  //final _formKey = GlobalKey<FormBuilderState>();
+
+  final AuthService _auth=AuthService();
   final _formKey = GlobalKey<FormBuilderState>();
+
+  String email="";
+  String username="";
+  String password="";
+  String error="";
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +72,10 @@ class _SignUpState extends State<SignUp> {
                                 padding: const EdgeInsets.only(
                                     left: 20.0, top: 12, bottom: 12),
                                 child: FormBuilderTextField(
-                                  onChanged: (value) =>
-                                      _formKey.currentState.validate(),
+                                  onChanged: (value) {
+                                    _formKey.currentState.validate();
+                                    setState(()=>email=value);
+                                  },
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 16,
@@ -96,8 +107,11 @@ class _SignUpState extends State<SignUp> {
                                     fontFamily: 'Roboto',
                                     fontSize: 16,
                                   ),
-                                  onChanged: (value) =>
-                                      _formKey.currentState.validate(),
+                                  onChanged: (value) {
+                                    _formKey.currentState.validate();
+                                    setState(()=>username=value);
+
+                                  },
                                   maxLines: 1,
                                   attribute: "username",
                                   decoration: InputDecoration(
@@ -120,8 +134,10 @@ class _SignUpState extends State<SignUp> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
                                 child: FormBuilderTextField(
-                                  onChanged: (value) =>
-                                      _formKey.currentState.validate(),
+                                  onChanged: (value) {
+                                    _formKey.currentState.validate();
+                                    setState(()=>password=value);
+                                  },
                                   obscureText: true,
                                   maxLines: 1,
                                   style: TextStyle(
@@ -201,9 +217,18 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ],
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     if (_formKey.currentState.saveAndValidate()) {
                       print(_formKey.currentState.value);
+                      setState(()=>loading=true);
+                      dynamic result= await _auth.registerWithEmailAndPassword(email, password);
+                      print(result);
+                      if(result==null){
+                        setState((){
+                          error='please give a valid email';
+                          loading=false;
+                        });
+                      }
                     }
                   },
                 ),

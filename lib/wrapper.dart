@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo_app/screens/authenticate/authenticate.dart';
-import 'package:flutterdemo_app/screens/authenticate/sign_in.dart';
-import 'package:flutterdemo_app/screens/home/home.dart';
+import 'package:Tyred/authentication/authentication.dart';
+import 'package:Tyred/authentication/login.dart';
+import 'package:Tyred/home/home.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
+import 'package:Tyred/services/auth.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<User>(context);
     print(user);
     if(user==null)
-    return Authenticate();
+    return Authentication();
     else
       return Home();
     //return either home or authenticate widget
