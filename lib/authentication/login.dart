@@ -191,7 +191,7 @@ class _LoginState extends State<Login> {
                   ),
                   onPressed: () async{
                     if (_formKey.currentState.saveAndValidate()) {
-                      //print(_formKey.currentState.value);
+                      print(_formKey.currentState.value);
                       setState(()=>loading=true);
                       dynamic result= await _auth.signInWithEmailAndPassword(email, password);
                       if(result==null){

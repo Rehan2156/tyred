@@ -15,7 +15,7 @@ class _SignUpState extends State<SignUp> {
   //final _formKey = GlobalKey<FormBuilderState>();
 
   final AuthService _auth=AuthService();
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
 
   String email="";
   String username="";
@@ -218,8 +218,8 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                   onPressed: () async{
-                    if (_formKey.currentState.saveAndValidate()) {
-                      print(_formKey.currentState.value);
+                    if (_formKey.currentState.validate()) {
+                      //print(_formKey.currentState.value);
                       setState(()=>loading=true);
                       dynamic result= await _auth.registerWithEmailAndPassword(email, password);
                       print(result);
